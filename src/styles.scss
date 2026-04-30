@@ -1,1 +1,138 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700;800&display=swap');
+
+// ─── Design Tokens ────────────────────────────────────────────────────────────
+:root {
+  --clr-primary:       #66CC00;
+  --clr-primary-dark:  #1F4D00;
+  --clr-primary-light: #2D6600;
+  --clr-accent:        #66CC0040;
+
+  --clr-bg:            #f0f2f5;
+  --clr-surface:       #ffffff;
+  --clr-surface-2:     #f7f9fb;
+  --clr-border:        #e4e8ed;
+
+  --clr-text-1:        #111827;
+  --clr-text-2:        #6b7280;
+  --clr-text-3:        #9ca3af;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.07);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.09);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.11);
+  --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.14);
+
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
+  --radius-pill: 100px;
+
+  --ease: 0.2s ease;
+  --ease-bounce: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --btn-gradient: linear-gradient(135deg, #66CC00 0%, #2D6600 100%);
+
+  --header-h: 68px;
+
+  /* Responsive spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+}
+
+/* ─── Mobile Adjustments ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  :root {
+    --header-h: 60px;
+  }
+}
+
+// ─── Dark Theme ───────────────────────────────────────────────────────────────
+:root.dark {
+  --clr-bg:        #030712;
+  --clr-surface:   #1a1f2e;
+  --clr-surface-2: #252d3d;
+  --clr-border:    #3a4556;
+
+  --clr-primary:       #66CC00;
+  --clr-primary-dark:  #1F4D00;
+  --clr-primary-light: #2D6600;
+  --clr-accent:        #66CC0033;
+
+  --clr-text-1:    #e6edf3;
+  --clr-text-2:    #8b949e;
+  --clr-text-3:    #6e7681;
+  
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
+  --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.7);
+
+  --header-bg:     #101828E5;
+}
+
+:root {
+  --header-bg:     rgba(255, 255, 255, 0.8);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
+  --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.7);
+}
+
+// ─── Base Reset ───────────────────────────────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  @media (max-width: 1024px) {
+    font-size: 15px;
+  }
+  @media (max-width: 640px) {
+    font-size: 14px;
+  }
+}
+
+body {
+  font-family: 'Fredoka', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--clr-bg);
+  color: var(--clr-text-1);
+  line-height: 1.5;
+  transition:
+    background-color var(--ease),
+    color var(--ease);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
