@@ -14,11 +14,18 @@ export const adminGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
   const user = auth.getUser();
+  
+  console.log('[AdminGuard] User:', user);
+  console.log('[AdminGuard] User rol:', user?.rol);
+  
   const isAdmin = (user?.rol ?? '').toLowerCase() === 'admin';
+  
+  console.log('[AdminGuard] Is admin:', isAdmin);
 
   if (isAdmin) {
     return true;
   }
 
+  console.log('[AdminGuard] Redirecting to home - not admin');
   return router.createUrlTree(['/']);
 };

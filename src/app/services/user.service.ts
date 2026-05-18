@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 export class UserService {
   private readonly STORAGE_KEY = 'wonder_user_id';
 
-  readonly userId = signal<number | null>(null);
+  readonly userId = signal<string | null>(null);
 
   constructor() {
     this.initUser();
@@ -16,11 +16,10 @@ export class UserService {
 
     const stored = localStorage.getItem(this.STORAGE_KEY);
     if (stored) {
-      const storedId = parseInt(stored, 10);
       // Verificar que el ID sigue existiendo en la BD
-      const existe = await this.verificarUsuario(storedId);
+      const existe = await this.verificarUsuario(stored);
       if (existe) {
-        this.userId.set(storedId);
+        this.userId.set(stored);
         return;
       }
       localStorage.removeItem(this.STORAGE_KEY);
@@ -29,7 +28,7 @@ export class UserService {
     await this.createGuestUser();
   }
 
-  private async verificarUsuario(id: number): Promise<boolean> {
+  private async verificarUsuario(id: string): Promise<boolean> {
     try {
       const res = await fetch(`${environment.apiUrl}/usuarios/${id}/existe`);
       const data = await res.json();
@@ -46,18 +45,19 @@ export class UserService {
         method: 'POST',
       });
       const data = await res.json();
-      localStorage.setItem(this.STORAGE_KEY, data.id.toString());
+      localStorage.setItem(this.STORAGE_KEY, data.id);
       this.userId.set(data.id);
     } catch (err) {
       console.error('[UserService] No se pudo crear usuario invitado:', err);
     }
   }
 
-  setUserId(id: number): void {
+  setUserId(id: string | number): void {
+    const idString = typeof id === 'string' ? id : id.toString();
     if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(this.STORAGE_KEY, id.toString());
+      localStorage.setItem(this.STORAGE_KEY, idString);
     }
-    this.userId.set(id);
+    this.userId.set(idString);
   }
 
   clearUser(): void {

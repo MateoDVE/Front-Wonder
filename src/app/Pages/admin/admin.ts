@@ -60,8 +60,8 @@ export class AdminPage implements OnInit {
   );
 
   ngOnInit(): void {
-    void this.productService.loadAll();
-    void this.categoryService.loadAll();
+    void this.productService.loadAll({ onlyActive: false });
+    void this.categoryService.loadAll({ onlyActive: false });
   }
 
   onSearch(event: Event): void {

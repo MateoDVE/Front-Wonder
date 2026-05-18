@@ -1,20 +1,22 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { ThemeService } from '../../services/theme.service';
 import { LoginModalComponent } from '../login-modal/login-modal.component';
 import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.html',
   styleUrl: './header.scss',
-  imports: [LoginModalComponent],
+  imports: [LoginModalComponent, RouterLink],
 })
 export class HeaderComponent {
   readonly cart = inject(CartService);
   readonly theme = inject(ThemeService);
   private readonly auth = inject(AuthService);
+  private readonly userService = inject(UserService);
   private readonly router = inject(Router);
 
   showLoginModal = false;
@@ -50,7 +52,8 @@ export class HeaderComponent {
 
   logout(): void {
     this.auth.logout();
+    this.userService.clearUser();
     this.currentUser = null;
-    void this.router.navigateByUrl('/');
+    window.location.href = '/';
   }
 }

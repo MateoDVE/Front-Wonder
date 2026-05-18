@@ -28,7 +28,7 @@
     </div>
 
     <div class="product-card__meta">
-      <span class="product-card__price">{{ product.precio_venta | currency }}</span>
+      <span class="product-card__price">{{ product.precio_venta | currency:undefined:'Bs. ' }}</span>
       <span class="product-card__stock" [class.product-card__stock--out]="!inStock">
         {{ product.stock }} in stock
       </span>
