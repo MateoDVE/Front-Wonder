@@ -1,8 +1,11 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+const isProduction =
+	process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
+
 const defaultApiUrl =
-	process.env.NODE_ENV === 'production'
+	isProduction
 		? 'https://back-wonder.vercel.app'
 		: 'http://localhost:3000';
 
