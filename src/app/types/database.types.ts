@@ -38,7 +38,7 @@ export interface Producto {
 // ─── Respuesta del backend para /carrito ──────────────────────────────────────
 export interface BackendCarritoItem {
   id: number;
-  usuario_id: number;
+  usuario_id: string;
   producto_id: number;
   cantidad: number;
   precio_unitario: number;

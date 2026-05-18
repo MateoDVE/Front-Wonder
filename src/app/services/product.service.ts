@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
+import { firstValueFrom, timeout } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Producto } from '../types/database.types';
 import { AuthService } from './auth.service';
@@ -15,19 +15,26 @@ export class ProductService {
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
 
-  async loadAll(): Promise<void> {
+  private loadSeq = 0;
+
+  async loadAll(options?: { onlyActive?: boolean }): Promise<void> {
+    const seq = ++this.loadSeq;
     this.loading.set(true);
     this.error.set(null);
     try {
+      const onlyActive = options?.onlyActive ?? true;
+      const params = onlyActive ? { activo: 'true' } : undefined;
       const data = await firstValueFrom(
-        this.http.get<Producto[]>(this.base, { params: { activo: 'true' } }),
+        this.http.get<Producto[]>(this.base, { params }).pipe(timeout(10000)),
       );
+      if (seq !== this.loadSeq) return;
       this.productos.set(data ?? []);
     } catch (err) {
+      if (seq !== this.loadSeq) return;
       this.error.set('No se pudieron cargar los productos.');
       console.error('[ProductService]', err);
     } finally {
-      this.loading.set(false);
+      if (seq === this.loadSeq) this.loading.set(false);
     }
   }
 

@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface CheckoutRequest {
-  usuarioId: number;
+  usuarioId: string;
   total: number;
   items: Array<{
     productoId: number;
@@ -16,7 +16,7 @@ export interface CheckoutRequest {
 
 export interface CheckoutResponse {
   id: number;
-  usuario_id: number;
+  usuario_id: string;
   total: number;
   estado: 'pendiente' | 'confirmado' | 'enviado' | 'entregado' | 'cancelado';
   created_at: string;
@@ -52,7 +52,7 @@ export class CheckoutService {
     return firstValueFrom(this.http.get<CheckoutResponse>(`${this.base}/${id}`));
   }
 
-  async getUserOrders(usuarioId: number): Promise<CheckoutResponse[]> {
+  async getUserOrders(usuarioId: string): Promise<CheckoutResponse[]> {
     return firstValueFrom(
       this.http.get<CheckoutResponse[]>(`${this.base}/usuario/${usuarioId}`),
     );

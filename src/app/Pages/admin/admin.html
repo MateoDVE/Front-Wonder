@@ -109,7 +109,7 @@
                 <div class="admin-card__meta">
                   <div>
                     <span>Price</span>
-                    <strong>{{ product.precio_venta | currency }}</strong>
+                    <strong>{{ product.precio_venta | currency:undefined:'Bs. ' }}</strong>
                   </div>
                   <div>
                     <span>Stock</span>

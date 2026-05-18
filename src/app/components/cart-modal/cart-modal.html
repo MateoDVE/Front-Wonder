@@ -43,7 +43,7 @@
 
               <div class="cart-item__info">
                 <span class="cart-item__name">{{ item.nombre }}</span>
-                <span class="cart-item__price">{{ item.precio | currency }}</span>
+                <span class="cart-item__price">{{ item.precio | currency:undefined:'Bs. ' }}</span>
               </div>
 
               <div class="cart-item__actions">
@@ -75,7 +75,7 @@
         <div class="cart-modal__footer">
           <div class="cart-modal__total">
             <span class="cart-modal__total-label">Total:</span>
-            <span class="cart-modal__total-value">{{ cart.total() | currency }}</span>
+            <span class="cart-modal__total-value">{{ cart.total() | currency:undefined:'Bs. ' }}</span>
           </div>
           <button
             class="cart-modal__checkout"

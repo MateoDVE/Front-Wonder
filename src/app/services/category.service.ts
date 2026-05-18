@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Categoria } from '../types/database.types';
 import { AuthService } from './auth.service';
@@ -15,19 +15,26 @@ export class CategoryService {
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
 
-  async loadAll(): Promise<void> {
+  private loadSeq = 0;
+
+  async loadAll(options?: { onlyActive?: boolean }): Promise<void> {
+    const seq = ++this.loadSeq;
     this.loading.set(true);
     this.error.set(null);
     try {
+      const onlyActive = options?.onlyActive ?? true;
+      const params = onlyActive ? { activa: 'true' } : undefined;
       const data = await firstValueFrom(
-        this.http.get<Categoria[]>(this.base, { params: { activa: 'true' } }),
+        this.http.get<Categoria[]>(this.base, { params }).pipe(timeout(10000)),
       );
+      if (seq !== this.loadSeq) return;
       this.categorias.set(data ?? []);
     } catch (err) {
+      if (seq !== this.loadSeq) return;
       this.error.set('No se pudieron cargar las categorías.');
       console.error('[CategoryService]', err);
     } finally {
-      this.loading.set(false);
+      if (seq === this.loadSeq) this.loading.set(false);
     }
   }
 

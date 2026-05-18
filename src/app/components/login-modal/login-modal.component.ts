@@ -429,10 +429,23 @@ export class LoginModalComponent {
     const { email, password } = this.form.value as { email: string; password: string };
     this.auth.login(email!, password!).subscribe({
       next: (res: any) => {
+        console.log('[LoginModal] Login response:', res);
+        
         if (res?.accessToken && res?.user) {
+          console.log('[LoginModal] User object:', res.user);
+          console.log('[LoginModal] User rol:', res.user.rol);
+          
           this.auth.setToken(res.accessToken);
+          if (res.refreshToken) {
+            this.auth.setRefreshToken(res.refreshToken);
+          }
           this.auth.setUser(res.user);
-          if (typeof res.user.id === 'number') {
+          
+          // Verify it was saved
+          const savedUser = this.auth.getUser();
+          console.log('[LoginModal] Saved user from localStorage:', savedUser);
+          
+          if (typeof res.user.id === 'string' || typeof res.user.id === 'number') {
             this.userService.setUserId(res.user.id);
           }
           this.loginSuccess.emit(res.user);
@@ -446,6 +459,7 @@ export class LoginModalComponent {
       },
       error: (err: any) => {
         this.error = err?.error?.message || 'Error al iniciar sesión';
+        console.error('[LoginModal] Login error:', err);
         this.loading = false;
       },
     });
